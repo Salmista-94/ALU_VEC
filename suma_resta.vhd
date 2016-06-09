@@ -29,7 +29,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity sum_res1 is
     generic (SIZE: integer range 1 to 32:= 16);
-    Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);
+    Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- declararlo como array (x[n])
 	        sal : out  STD_LOGIC_VECTOR (SIZE downto 0));	 
 end sum_res1;
 
@@ -50,7 +50,7 @@ end SUMAR;
 
 entity sum_res2 is
     generic (SIZE: integer range 1 to 32:= 16);
-    Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);
+    Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- declararlo como array (x[n])
           over : out  STD_LOGIC;  
           sal : out  STD_LOGIC_VECTOR (SIZE-1 downto 0));  
 end sum_res2;
