@@ -35,7 +35,9 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity comparador1 is
     generic (SIZE: integer range 1 to 32:= 16);
-    Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- declararlo como array (x[n])
+    generic (COUNT: integer range 1 to 12:= 5);
+    type vector is array(COUNT-1 downto 0, SIZE-1 downto 0) of std_logic;
+    Port ( ops : in  vector;-- declararlo como array (x[n])
           estado : out  STD_LOGIC);
 end comparador1;
 
@@ -44,18 +46,37 @@ end comparador1;
 
 entity comparador2 is
     generic (SIZE: integer range 1 to 32:= 16);
-    Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- declararlo como array (x[n])
-    Port ( c : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);
-          estado : out  STD_LOGIC);
+    generic (COUNT: integer range 1 to 12:= 5);
+    type vector is array(COUNT-1 downto 0, SIZE-1 downto 0) of std_logic;
+    Port ( ops : in  vector;-- declararlo como array (x[n])
+        single_OP : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- ó utilizando al primer entero del vector
+        estado : out  STD_LOGIC);
 end comparador2;
 
 
 
 
-architecture IGUAL of comparador1 is
+
+architecture IGUAL of comparador1 is 
+signal counts : out  STD_LOGIC_VECTOR (5 downto 0);
 begin       
 
-estado := '1' when op1 = op2 else '0';
+process( )
+    begin   -- 
+    counts <= (others => '0');
+    for j in 0 to COUNT-2 loop
+        IF (op(j) = op(j+1)) THEN
+            counts = counts + 1;
+            break;
+        end if;
+    end loop;
+
+    if counts = COUNT-1 then
+        estado := '1';
+    else 
+        estado := '0';
+    end if ;
+end process ;
 
 end IGUAL;
 
@@ -64,10 +85,22 @@ end IGUAL;
 
 
 
-architecture IGUAL of comparador2 is
+architecture IGUAL of comparador2 is 
+signal aux : out  STD_LOGIC;
 begin       
 
-estado := '1' when op1 = op2 = c else '0';
+process( )
+    begin   -- 
+    aux <= '1';
+    for j in 0 to COUNT-1 loop
+        IF (op(j) ~= single_OP) THEN
+            aux := '0';
+            break;
+        end if;
+    end loop;
+
+end process ;
+estado := aux;
 
 end IGUAL;
 
