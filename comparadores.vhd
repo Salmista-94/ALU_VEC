@@ -93,7 +93,7 @@ process( )
     begin   -- 
     aux <= '1';
     for j in 0 to COUNT-1 loop
-        IF (op(j) ~= single_OP) THEN
+        IF (op(j) /= single_OP) THEN
             aux := '0';
             break;
         end if;
@@ -136,7 +136,7 @@ end MENOR;
 architecture DISTINTO of comparador1 is
 begin       
 
-estado := '1' when op1 ~= op2 else '0';
+estado := '1' when op1 /= op2 else '0';
 
 end IGUAL;
 
@@ -148,6 +148,6 @@ end IGUAL;
 architecture DISTINTO of comparador2 is
 begin       
 
-estado := '1' when c ~= op1 and c ~= op2 else '0';
+estado := '1' when c /= op1 and c /= op2 else '0';
 
 end IGUAL;

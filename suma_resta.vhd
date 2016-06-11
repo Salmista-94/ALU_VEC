@@ -27,10 +27,12 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
+
 entity sum_res1 is
     generic (SIZE: integer range 1 to 32:= 16);
     Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- declararlo como array (x[n])
-	        sal : out  STD_LOGIC_VECTOR (SIZE downto 0));	 
+            sal : out  STD_LOGIC_VECTOR (SIZE downto 0);
+            c,z : out  STD_LOGIC);   
 end sum_res1;
 
 
@@ -38,37 +40,13 @@ end sum_res1;
 architecture SUMAR of sum_res1 is
 begin       
 
-sal <= (op1(3)& op1) + op2;
+sal := (op1(SIZE-1)& op1) + op2;
+c := '1' when sal(SIZE) /= op1(SIZE-1) and op1(SIZE-1) = op2(SIZE-1) else '0';
+z := '1' when sal = (others => '0') else '0';
         
 end SUMAR;
 
 
-
-
-
-
-
-entity sum_res2 is
-    generic (SIZE: integer range 1 to 32:= 16);
-    Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- declararlo como array (x[n])
-          over : out  STD_LOGIC;  
-          sal : out  STD_LOGIC_VECTOR (SIZE-1 downto 0));  
-end sum_res2;
-
-
-
-
-architecture SUMAR of sum_res2 is
-begin       
-        
-sal <= op1 + op2;
-IF (sal<0 AND op1>0 AND op2>0) OR (sal>0 AND op1<0 AND op2<0) OR (sal=(other=>"0") AND op1=sal="1"(other=>"0")) THEN
-    over := '1';
-ELSE
-    over := '0';
-END IF;
-    
-end SUMAR;
 
 
 
@@ -77,25 +55,8 @@ end SUMAR;
 architecture RESTAR of sum_res1 is
 begin       
 
-sal <= (op1(3)& op1) - op2;
+sal <= (op1(SIZE-1)& op1) - op2;
+c := '1' when sal(SIZE) = op2(SIZE-1) and op1(SIZE-1) /= op2(SIZE-1) else '0';
+z := '1' when sal = (others => '0') else '0';
         
 end RESTAR;
-
-
-
-
-
-
---Necesito verificar ésta arquitectura
-architecture RESTAR of sum_res2 is
-begin       
-        
-sal <= op1 - op2;
-IF (sal<0 AND op1>0 AND op2<0) OR (sal>0 AND op1<0 AND op2>0) OR (sal=(other=>"0") AND op1=sal="1"(other=>"0")) THEN
-    over := '1';
-ELSE
-    over := '0';
-END IF;
-    
-end RESTAR;
-
