@@ -31,7 +31,7 @@ entity rotador1 is
     generic (SIZE: integer range 1 to 32:= 16);
     Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);   -- declararlo como array (x[n])
             c : out  STD_LOGIC;                                 -- podría implementarlo sin 'CARRY'
-	        sal : out  STD_LOGIC_VECTOR (SIZE downto 0));	 
+            sal : out  STD_LOGIC_VECTOR (SIZE downto 0));    
 end rotador1;
 
 
@@ -47,8 +47,8 @@ process(op1, op2)
     begin       
     tmp1 <= (0&op1)/2;
     tmp2 <= (0&op2)/2;
-    sal1 <= tmp1(SIZE-1 to 0);
-    sal2 <= tmp2(SIZE-1 to 0);
+    sal1 <= tmp1(SIZE-1 to 1)&tmp1(SIZE);
+    sal2 <= tmp2(SIZE-1 to 1)&tmp2(SIZE);
 
     --podría tambien hacer 'carries' y 'zeros' para cada elemento del bus...
     c := '1' when tmp1(SIZE) = '1' or tmp2(SIZE) = '1' else '0';
@@ -69,8 +69,8 @@ process(op1, op2)
     begin       
     tmp1 <= (0&op1)*2;
     tmp2 <= (0&op2)*2;
-    sal1 <= tmp1(SIZE-1 to 0);
-    sal2 <= tmp2(SIZE-1 to 0);
+    sal1 <= tmp1(SIZE-1 to 1)&tmp1(SIZE);
+    sal2 <= tmp2(SIZE-1 to 1)&tmp2(SIZE);
 
     --podría tambien hacer 'carries' y 'zeros' para cada elemento del bus...
     c := '1' when tmp1(SIZE) = '1' or tmp2(SIZE) = '1' else '0';
