@@ -30,9 +30,11 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity prod_div1 is
     generic (SIZE: integer range 1 to 32:= 16);
-    Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- declararlo como array (x[n])
-	        sal : out  STD_LOGIC_VECTOR (SIZE-1 downto 0)
-            c,z : out  STD_LOGIC
+    generic (COUNT: integer range 1 to 12:= 5);
+    type vector is array(COUNT-1 downto 0) of STD_LOGIC_VECTOR (SIZE-1 downto 0);
+    Port ( ops : in  vector;
+	        sal : in  vector;
+            c,z : out  STD_LOGIC;
             zeroDivision : out  STD_LOGIC);   	 
 end prod_div1;
 
@@ -42,14 +44,19 @@ end prod_div1;
 
 architecture MULTIPLICAR of prod_div1 is
 tmp : out  STD_LOGIC_VECTOR (SIZE downto 0);
+Ztmp : out  STD_LOGIC;
 begin       
 
-process(op1, op2)
+process(ops)
 begin
-    tmp <= (op1(SIZE-1)& op1) * op2;
-    sal <= tmp(SIZE-1 to 0);
-    c := '1' when tmp(SIZE) /= op1(SIZE-1) and op1(SIZE-1) = op2(SIZE-1) else '0';
-    z := '1' when sal = (others => '0') else '0';
+    for i in 1 to COUNT-1 loop
+        tmp <= (ops(i,SIZE-1)& ops(i)) * ops(0);
+        sal <= tmp(SIZE-1 to 0);
+        c <= '1' when tmp(SIZE) /= op1(SIZE-1) and op1(SIZE-1) = op2(SIZE-1) else '0';
+        if Ztmp = '0' then 
+            Ztmp <= '1' when sal(i) = (others => '0') else '0';
+        end if;
+    end loop;
 end process;
         
 end MULTIPLICAR;
@@ -60,17 +67,26 @@ end MULTIPLICAR;
 
 
 architecture DIVIDIR of prod_div1 is
+Ztmp : out  STD_LOGIC;
 begin       
 
-process(op1, op2)
+process(ops)
 begin
-    if op2 = (others => '0') then 
-        zeroDivision <= '1';
-    else
-        zeroDivision <= '0';
-        sal <= op1 / op2;
-        z := '1' when sal = (others => '0') else '0';
-    end if ;
+    Ztmp <= '0';
+    sal(0) <= ops(0);
+    for i in 1 to COUNT-1 loop
+        if ops(0) = (others => '0') then 
+            zeroDivision <= '1';
+            sal(i) <= ops(i);
+        else
+            zeroDivision <= '0';
+            sal(i) <=  ops(i) / ops(0);
+            if Ztmp = '0' then 
+                Ztmp <= '1' when sal(i) = (others => '0') else '0';
+            end if;
+        end if;
+    end loop;
+    z <= Ztmp;
 end process;
         
 end DIVIDIR;
