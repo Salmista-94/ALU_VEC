@@ -113,7 +113,7 @@ process(op1, op2)
     sal2 <= tmp2(SIZE-1 to 0);
 
     --podría tambien hacer 'carries' y 'zeros' para cada elemento del bus...
-    c := '1' when tmp1(SIZE) = '1' or tmp2(SIZE) = '1' else '0';
+    c <= '1' when tmp1(SIZE) = '1' or tmp2(SIZE) = '1' else '0';
 end process;
         
 end DESPLAZAR_D;
@@ -135,7 +135,7 @@ process(op1, op2)
     sal2 <= tmp2(SIZE-1 to 0);
 
     --podría tambien hacer 'carries' y 'zeros' para cada elemento del bus...
-    c := '1' when tmp1(SIZE) = '1' or tmp2(SIZE) = '1' else '0';
+    c <= '1' when tmp1(SIZE) = '1' or tmp2(SIZE) = '1' else '0';
 end process;     
 
         

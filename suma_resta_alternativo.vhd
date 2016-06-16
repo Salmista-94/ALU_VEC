@@ -42,9 +42,9 @@ begin
         
 sal <= op1 - op2;
 IF (sal<0 AND op1>0 AND op2<0) OR (sal>0 AND op1<0 AND op2>0) OR (sal=(other=>"0") AND op1=sal="1"(other=>"0")) THEN
-    over := '1';
+    over <= '1';
 ELSE
-    over := '0';
+    over <= '0';
 END IF;
     
 end RESTAR;
@@ -60,9 +60,9 @@ begin
         
 sal <= op1 + op2;
 IF (sal<0 AND op1>0 AND op2>0) OR (sal>0 AND op1<0 AND op2<0) OR (sal=(other=>"0") AND op1=sal="1"(other=>"0")) THEN
-    over := '1';
+    over <= '1';
 ELSE
-    over := '0';
+    over <= '0';
 END IF;
     
 end SUMAR;
