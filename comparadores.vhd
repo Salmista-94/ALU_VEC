@@ -36,7 +36,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity comparador1 is
     generic (SIZE: integer range 1 to 32:= 16);
     generic (COUNT: integer range 1 to 12:= 5);
-    type vector is array(COUNT-1 downto 0, SIZE-1 downto 0) of std_logic;
+    type vector is array(COUNT-1 downto 0) of STD_LOGIC_VECTOR (SIZE-1 downto 0);
     Port ( ops : in  vector;-- declararlo como array (x[n])
           estado : out  STD_LOGIC);
 end comparador1;
