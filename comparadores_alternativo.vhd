@@ -29,17 +29,14 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 
 
-
-
-
-
-entity comparador1 is
+entity comparador2 is
     generic (SIZE: integer range 1 to 32:= 16);
     generic (COUNT: integer range 1 to 12:= 5);
     type vector is array(COUNT-1 downto 0, SIZE-1 downto 0) of std_logic;
     Port ( ops : in  vector;-- declararlo como array (x[n])
-          estado : out  STD_LOGIC);
-end comparador1;
+        single_OP : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- ó utilizando al primer entero del vector
+        estado : out  STD_LOGIC);
+end comparador2;
 
 
 
@@ -47,45 +44,24 @@ end comparador1;
 
 
 
---architecture IGUAL of comparador1 is 
---signal counts : out  STD_LOGIC_VECTOR (5 downto 0);
---begin       
 
---process(op)
---    begin   -- 
---    counts <= (others => '0');
---    for j in 0 to COUNT-2 loop
---        IF (op(j) = op(j+1)) THEN
---            counts = counts + 1;
---            break;
---        end if;
---    end loop;
 
---    if counts = COUNT-1 then
---        estado := '1';
---    else 
---        estado := '0';
---    end if ;
---end process ;
-
---end IGUAL;
-
-architecture IGUAL of comparador1 is 
+architecture IGUAL of comparador2 is 
 signal aux : out  STD_LOGIC;
 begin       
 
-process(op)
+process(op, single_OP)
     begin   -- 
     aux <= '1';
-    for j in 0 to COUNT-2 loop
-        IF (op(j) /= op(j+1)) THEN
+    for j in 0 to COUNT-1 loop
+        IF (op(j) /= single_OP) THEN
             aux <= '0';
             break;
         end if;
     end loop;
-    estado <= aux;
 
 end process ;
+estado <= aux;
 
 end IGUAL;
 
@@ -93,14 +69,15 @@ end IGUAL;
 
 
 
-architecture MAYOR of comparador1 is
+
+architecture MAYOR of comparador2 is
 begin       
 
-process(op)
-    begin   -- vec[0] > vec[1] and vec[0] > vec[2] and vec[0] > vec[3] and vec[0] > vec[4]
+process(op, single_OP)
+    begin   -- 
     aux <= '1';
-    for j in 1 to COUNT-1 loop
-        IF (not (op(0) > op(j)) THEN
+    for j in 0 to COUNT-1 loop
+        IF (not (single_OP > op(j)) THEN
             aux <= '0';
             break;
         end if;
@@ -116,15 +93,15 @@ end MAYOR;
 
 
 
-architecture MENOR of comparador1 is
+architecture MENOR of comparador2 is
 signal aux : out  STD_LOGIC;
 begin       
 
-process(op)
-    begin   -- vec[0] < vec[1] and vec[0] < vec[2] and vec[0] < vec[3] and vec[0] < vec[4]
+process(op, single_OP)
+    begin   -- 
     aux <= '1';
-    for j in 1 to COUNT-1 loop
-        IF (not (op(0) < op(j)) THEN
+    for j in 0 to COUNT-1 loop
+        IF (not (single_OP < op(j)) THEN
             aux <= '0';
             break;
         end if;
@@ -140,16 +117,15 @@ end MENOR;
 
 
 
-
-architecture DISTINTO of comparador1 is
+architecture DISTINTO of comparador2 is
 signal aux : out  STD_LOGIC;
 begin
 
-process(op)
+process(op, single_OP)
     begin   -- 
     aux <= '1';
-    for j in 0 to COUNT-2 loop
-        IF (op(j) = op(j+1)) THEN
+    for j in 0 to COUNT-1 loop
+        IF (op(j) = single_OP) THEN
             aux <= '0';
             break;
         end if;
@@ -159,4 +135,3 @@ process(op)
 end process ;
 
 end DISTINTO;
-
