@@ -47,6 +47,8 @@ begin
 
 process(ops)
 begin
+    Ctmp = '0';
+    Ztmp = '0';
     for i in 0 to COUNT-2 loop
         tmp <= (ops(i,SIZE-1)& ops(i)) + ops(i+1);
         if Ctmp = '0' then 

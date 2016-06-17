@@ -52,6 +52,8 @@ begin
 
 process(ops1, ops2)
 begin
+    Ctmp = '0';
+    Ztmp = '0';
     for i in 0 to COUNT-1 loop
         tmp <= (ops(i,SIZE-1)& ops1(i)) + ops2(i);
         sal(i) <= tmp(SIZE-1 to 0);
@@ -82,6 +84,8 @@ begin
 
 process(ops1, ops2)
 begin
+    Ctmp = '0';
+    Ztmp = '0';
     for i in 0 to COUNT-1 loop
         tmp <= (ops1(i,SIZE-1)& ops1(i)) - ops2(i);
         sal(i) <= tmp(SIZE-1 to 0);
