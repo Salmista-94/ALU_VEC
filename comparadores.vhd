@@ -57,7 +57,7 @@ end comparador1;
 --    for j in 0 to COUNT-2 loop
 --        IF (op(j) = op(j+1)) THEN
 --            counts = counts + 1;
---            break;
+--            /=;
 --        end if;
 --    end loop;
 
@@ -80,7 +80,7 @@ process(op)
     for j in 0 to COUNT-2 loop
         IF (op(j) /= op(j+1)) THEN
             aux <= '0';
-            break;
+            exit;
         end if;
     end loop;
     estado <= aux;
@@ -102,7 +102,7 @@ process(op)
     for j in 1 to COUNT-1 loop
         IF (not (op(0) > op(j)) THEN
             aux <= '0';
-            break;
+            exit;
         end if;
     end loop;
 
@@ -126,7 +126,7 @@ process(op)
     for j in 1 to COUNT-1 loop
         IF (not (op(0) < op(j)) THEN
             aux <= '0';
-            break;
+            exit;
         end if;
     end loop;
 
@@ -151,7 +151,7 @@ process(op)
     for j in 0 to COUNT-2 loop
         IF (op(j) = op(j+1)) THEN
             aux <= '0';
-            break;
+            exit;
         end if;
     end loop;
     estado <= aux;

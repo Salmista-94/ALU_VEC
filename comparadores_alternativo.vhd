@@ -56,7 +56,7 @@ process(op, single_OP)
     for j in 0 to COUNT-1 loop
         IF (op(j) /= single_OP) THEN
             aux <= '0';
-            break;
+            exit;
         end if;
     end loop;
 
@@ -79,7 +79,7 @@ process(op, single_OP)
     for j in 0 to COUNT-1 loop
         IF (not (single_OP > op(j)) THEN
             aux <= '0';
-            break;
+            exit;
         end if;
     end loop;
 
@@ -103,7 +103,7 @@ process(op, single_OP)
     for j in 0 to COUNT-1 loop
         IF (not (single_OP < op(j)) THEN
             aux <= '0';
-            break;
+            exit;
         end if;
     end loop;
 
@@ -127,7 +127,7 @@ process(op, single_OP)
     for j in 0 to COUNT-1 loop
         IF (op(j) = single_OP) THEN
             aux <= '0';
-            break;
+            exit;
         end if;
     end loop;
     estado <= aux;
