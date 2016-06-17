@@ -33,12 +33,20 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 
 
+entity hay_Cero_V is
+    generic (SIZE: integer range 1 to 32:= 16);
+    generic (COUNT: integer range 1 to 12:= 5);
+    type vector is array(COUNT-1 downto 0) of STD_LOGIC_VECTOR (SIZE-1 downto 0);
+    Port ( ops : in  vector;
+          estado : out  STD_LOGIC);
+end hay_Cero_V;
+
+
 entity hay_Cero is
     generic (SIZE: integer range 1 to 32:= 16);
-    Port ( op : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);-- declararlo como array (x[n])
+    Port ( op : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);
           estado : out  STD_LOGIC);
 end hay_Cero;
-
 
 
 
@@ -46,13 +54,13 @@ architecture Detector_Cero of hay_Cero is
 signal CERO : out  STD_LOGIC;
 begin       
 
-process( )
+process(op)
 begin   -- 
     CERO <= '0';
-    for j in 0 to n-1 loop
+    for j in 0 to SIZE-1 loop
         IF (op(j) = '0') THEN
             CERO = '1';
-            break;
+            exit;
         end if;
     end loop;
 end process ;
@@ -63,22 +71,60 @@ end Detector_Cero;
 
 
 
-architecture Detector_Nulo of hay_Cero is
-signal count : out  STD_LOGIC_VECTOR (SIZE-1 downto 0);
+--architecture Detector_Nulo of hay_Cero is
+--signal count : out  STD_LOGIC_VECTOR (SIZE-1 downto 0);
+--begin       
+
+--process( )
+--begin   -- 
+--    count <= (others => '0');
+--    for j in 0 to n-1 loop
+--        IF (op(j) = '0') THEN
+--            count = count + 1;
+--            exit;
+--        end if;
+--    end loop;
+--    if count = SIZE-1 then
+--        estado := CERO;
+--    end if ;
+--end process ;
+ 
+--end Detector_Nulo;
+
+
+
+
+architecture Detector_Nulo of hay_Cero_V is
+signal oper : out  STD_LOGIC_VECTOR (SIZE-1 downto 0);
+signal CERO : out  STD_LOGIC;
+
+constant TRUE: STD_LOGIC := '1';
+constant FALSE: STD_LOGIC := '0';
+
+
+-- Component Declarations
+component Detector_Cero
+Port ( op : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);
+          estado : out  STD_LOGIC);
+end component;
 begin       
 
-process( )
+es_cero: Detector_Cero Port ( op=>oper, estado=>CERO );
+
+process
+variable count: integer;
 begin   -- 
-    count <= (others => '0');
-    for j in 0 to n-1 loop
-        IF (op(j) = '0') THEN
-            count = count + 1;
-            break;
+    count <= 0;
+    for i in 0 to COUNT-1 loop
+        oper <= ops(j);
+        IF (CERO = TRUE) THEN
+            count := count + 1;
+            exit;
         end if;
     end loop;
     if count = SIZE-1 then
-        estado := CERO;
+        estado <= CERO;
     end if ;
 end process ;
- 
+
 end Detector_Nulo;
