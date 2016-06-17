@@ -18,8 +18,8 @@ begin
 
 process(op1, op2)
     begin
-    tmp1 <= (0&op1)/2;
-    tmp2 <= (0&op2)/2;
+    tmp1 <= (op1&0)/2;
+    tmp2 <= (op2&0)/2;
     sal1 <= tmp1(SIZE-1 to 0);
     sal2 <= tmp2(SIZE-1 to 0);
 
@@ -49,8 +49,7 @@ process(op1, op2)
     --podría tambien hacer 'carries' y 'zeros' para cada elemento del bus...
     c <= '1' when tmp1(SIZE) = '1' or tmp2(SIZE) = '1' else '0';
     z <= '1' when sal = (others => '0') else '0';
-end process;  
-
+end process;
         
 end DESPLAZAR_I;
 

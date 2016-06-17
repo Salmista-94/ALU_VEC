@@ -49,8 +49,8 @@ begin
 
 process(op1, op2)
     begin
-    tmp1 <= (0&op1)/2;
-    tmp2 <= (0&op2)/2;
+    tmp1 <= (op1&0)/2;
+    tmp2 <= (op2&0)/2;
     sal1 <= tmp1(SIZE-1 to 1)&tmp1(SIZE);
     sal2 <= tmp2(SIZE-1 to 1)&tmp2(SIZE);
 
