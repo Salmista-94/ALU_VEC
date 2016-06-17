@@ -33,7 +33,7 @@ entity prod_div_matricial1 is
     generic (COUNT: integer range 1 to 12:= 5);
     type vector is array(COUNT-1 downto 0) of STD_LOGIC_VECTOR (SIZE-1 downto 0);
     Port ( ops1, ops2 : in  vector;
-	        sal : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);
+	        sal : in  STD_LOGIC_VECTOR (2*SIZE-1 downto 0);
             c,z : out  STD_LOGIC;
             zeroDivision : out  STD_LOGIC);   	 
 end prod_div_matricial1;
@@ -43,25 +43,17 @@ end prod_div_matricial1;
 
 
 architecture MULTIPLICAR_MATRICIAL of prod_div_matricial1 is
-tmp : out  STD_LOGIC_VECTOR (SIZE downto 0);
-Ctmp : out  STD_LOGIC;
 Ztmp : out  STD_LOGIC;
 begin       
 
 process(ops1, ops2)
 begin
-    sal <= (others => '0');
     for i in 1 to COUNT-1 loop
-        tmp <= (ops1(i,SIZE-1)& ops1(i)) * ops2(i) + sal;
-        sal <= tmp(SIZE-1 to 0);
-        if Ctmp = '0' then --falta pensar la logica para un verdadero acarreo debido a '+ sal'.
-            Ctmp <= '1' when tmp(SIZE) /= ops1(i,SIZE-1) and ops1(i,SIZE-1) = ops2(i,SIZE-1) else '0';
-        end if;
+        sal <= ( ((others => '0')& ops1(i)) * ops2(i) ) + sal;
         if Ztmp = '0' then 
             Ztmp <= '1' when sal(i) = (others => '0') else '0';
         end if;
     end loop;
-    c <= Ctmp;
     z <= Ztmp;
 end process;
         

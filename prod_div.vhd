@@ -32,8 +32,9 @@ entity prod_div1 is
     generic (SIZE: integer range 1 to 32:= 16);
     generic (COUNT: integer range 1 to 12:= 5);
     type vector is array(COUNT-1 downto 0) of STD_LOGIC_VECTOR (SIZE-1 downto 0);
+    type vector_2 is array(COUNT-1 downto 0) of STD_LOGIC_VECTOR (2*SIZE-1 downto 0);
     Port ( ops : in  vector;
-            sal : in  vector;
+            sal : in  vector_2;
             c,z : out  STD_LOGIC;
             zeroDivision : out  STD_LOGIC);      
 end prod_div1;
@@ -44,23 +45,17 @@ end prod_div1;
 
 architecture MULTIPLICAR of prod_div1 is
 tmp : out  STD_LOGIC_VECTOR (SIZE downto 0);
-Ctmp : out  STD_LOGIC;
 Ztmp : out  STD_LOGIC;
 begin       
 
 process(ops)
 begin
     for i in 1 to COUNT-1 loop
-        tmp <= (ops(i,SIZE-1)& ops(i)) * ops(0);
-        sal <= tmp(SIZE-1 to 0);
-        if Ctmp = '0' then 
-            Ctmp <= '1' when tmp(SIZE) /= ops(i,SIZE-1) and ops(i,SIZE-1) = ops(0,SIZE-1) else '0';
-        end if;
+        sal(i) <= ((others => '0')& ops(i)) * ops(0);
         if Ztmp = '0' then 
             Ztmp <= '1' when sal(i) = (others => '0') else '0';
         end if;
     end loop;
-    c <= Ctmp;
     z <= Ztmp;
 end process;
         
