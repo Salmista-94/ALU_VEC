@@ -33,9 +33,9 @@ entity prod_div1 is
     generic (COUNT: integer range 1 to 12:= 5);
     type vector is array(COUNT-1 downto 0) of STD_LOGIC_VECTOR (SIZE-1 downto 0);
     Port ( ops : in  vector;
-	        sal : in  vector;
+            sal : in  vector;
             c,z : out  STD_LOGIC;
-            zeroDivision : out  STD_LOGIC);   	 
+            zeroDivision : out  STD_LOGIC);      
 end prod_div1;
 
 
@@ -52,7 +52,7 @@ begin
     for i in 1 to COUNT-1 loop
         tmp <= (ops(i,SIZE-1)& ops(i)) * ops(0);
         sal <= tmp(SIZE-1 to 0);
-        c <= '1' when tmp(SIZE) /= op1(SIZE-1) and op1(SIZE-1) = op2(SIZE-1) else '0';
+        c <= '1' when tmp(SIZE) /= ops(i,SIZE-1) and ops(i,SIZE-1) = ops(0,SIZE-1) else '0';
         if Ztmp = '0' then 
             Ztmp <= '1' when sal(i) = (others => '0') else '0';
         end if;
