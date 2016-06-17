@@ -44,6 +44,7 @@ end prod_div1;
 
 architecture MULTIPLICAR of prod_div1 is
 tmp : out  STD_LOGIC_VECTOR (SIZE downto 0);
+Ctmp : out  STD_LOGIC;
 Ztmp : out  STD_LOGIC;
 begin       
 
@@ -52,11 +53,15 @@ begin
     for i in 1 to COUNT-1 loop
         tmp <= (ops(i,SIZE-1)& ops(i)) * ops(0);
         sal <= tmp(SIZE-1 to 0);
-        c <= '1' when tmp(SIZE) /= ops(i,SIZE-1) and ops(i,SIZE-1) = ops(0,SIZE-1) else '0';
+        if Ctmp = '0' then 
+            Ctmp <= '1' when tmp(SIZE) /= ops(i,SIZE-1) and ops(i,SIZE-1) = ops(0,SIZE-1) else '0';
+        end if;
         if Ztmp = '0' then 
             Ztmp <= '1' when sal(i) = (others => '0') else '0';
         end if;
     end loop;
+    c <= Ctmp;
+    z <= Ztmp;
 end process;
         
 end MULTIPLICAR;
