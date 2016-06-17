@@ -29,7 +29,9 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity rotador1 is
     generic (SIZE: integer range 1 to 32:= 16);
-    Port ( op1, op2 : in  STD_LOGIC_VECTOR (SIZE-1 downto 0);   -- declararlo como array (x[n])
+    generic (COUNT: integer range 1 to 12:= 5);
+    type vector is array(COUNT-1 downto 0) of STD_LOGIC_VECTOR (SIZE-1 downto 0);
+    Port ( ops : in  vector;
             c : out  STD_LOGIC;                                 -- podría implementarlo sin 'CARRY'
             sal : out  STD_LOGIC_VECTOR (SIZE downto 0));    
 end rotador1;
@@ -39,19 +41,26 @@ end rotador1;
 
 
 architecture ROTAR_D of rotador1 is
-tmp1 : out  STD_LOGIC_VECTOR (SIZE downto 0);
-tmp2 : out  STD_LOGIC_VECTOR (SIZE downto 0);
+tmp : out  STD_LOGIC_VECTOR (SIZE downto 0);
 begin       
 
-process(op1, op2)
-    begin       
-    tmp1 <= (0&op1)/2;
-    tmp2 <= (0&op2)/2;
-    sal1 <= tmp1(SIZE-1 to 1)&tmp1(SIZE);
-    sal2 <= tmp2(SIZE-1 to 1)&tmp2(SIZE);
+process(ops)
+    begin
+    Ctmp = '0';
+    Ztmp = '0';
+    for i in 0 to COUNT-1 loop
+        tmp <= (ops(i)&0)/2;
+        if Ctmp = '0' then 
+            Ctmp <= tmp(0);
+        end if;--podría tambien hacer 'carries' y 'zeros' para cada elemento del bus...
+        if Ztmp = '0' then 
+            Ztmp <= '1' when sal(i) = (others => '0') else '0';
+        end if;
+        sal(i) <= tmp(0)&tmp(SIZE-1 to 1);
+    end loop;
+    c = Ctmp;
+    z = Ztmp;
 
-    --podría tambien hacer 'carries' y 'zeros' para cada elemento del bus...
-    c <= '1' when tmp1(SIZE) = '1' or tmp2(SIZE) = '1' else '0';
 end process;
         
 end ROTAR_D;
@@ -61,21 +70,29 @@ end ROTAR_D;
 
 
 architecture ROTAR_I of rotador1 is
-tmp1 : out  STD_LOGIC_VECTOR (SIZE downto 0);
-tmp2 : out  STD_LOGIC_VECTOR (SIZE downto 0);
+tmp : out  STD_LOGIC_VECTOR (SIZE downto 0);
 begin       
 
-process(op1, op2)
-    begin       
-    tmp1 <= (0&op1)*2;
-    tmp2 <= (0&op2)*2;
-    sal1 <= tmp1(SIZE-1 to 1)&tmp1(SIZE);
-    sal2 <= tmp2(SIZE-1 to 1)&tmp2(SIZE);
+process(ops)
+    begin
+    Ctmp = '0';
+    Ztmp = '0';
+    for i in 0 to COUNT-1 loop
+        tmp <= (0&ops(i))*2;
+        if Ctmp = '0' then 
+            Ctmp <= tmp(SIZE);
+        end if;--podría tambien hacer 'carries' y 'zeros' para cada elemento del bus...
+        if Ztmp = '0' then 
+            Ztmp <= '1' when sal(i) = (others => '0') else '0';
+        end if;
+        sal(i) <= tmp(SIZE-1 to 1)&tmp(SIZE);
+    end loop;
+    c = Ctmp;
+    z = Ztmp;
 
-    --podría tambien hacer 'carries' y 'zeros' para cada elemento del bus...
-    c <= '1' when tmp1(SIZE) = '1' or tmp2(SIZE) = '1' else '0';
-end process;     
+end process;   
 
         
 end ROTAR_I;
+
 
