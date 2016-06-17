@@ -83,10 +83,10 @@ begin
 process(ops1, ops2)
 begin
     for i in 0 to COUNT-1 loop
-        tmp <= (ops1(i,SIZE-1)& ops1(i)) + ops2(i);
+        tmp <= (ops1(i,SIZE-1)& ops1(i)) - ops2(i);
         sal(i) <= tmp(SIZE-1 to 0);
         if Ctmp = '0' then 
-            Ctmp <= '1' when tmp(SIZE) /= ops1(i,SIZE-1) and ops1(i,SIZE-1) = ops2(i,SIZE-1) else '0';
+            Ctmp <= '1' when tmp(SIZE) = ops1(i,SIZE-1) and ops1(i,SIZE-1) /= ops2(i,SIZE-1) else '0';
         end if;
         if Ztmp = '0' then 
             Ztmp <= '1' when sal(i) = (others => '0') else '0';
