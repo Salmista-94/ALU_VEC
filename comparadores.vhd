@@ -74,11 +74,11 @@ architecture IGUAL of comparador1 is
 signal aux : out  STD_LOGIC;
 begin       
 
-process(op)
+process(ops)
     begin   -- 
     aux <= '1';
     for j in 0 to COUNT-2 loop
-        IF (op(j) /= op(j+1)) THEN
+        IF (ops(j) /= ops(j+1)) THEN
             aux <= '0';
             exit;
         end if;
@@ -96,11 +96,11 @@ end IGUAL;
 architecture MAYOR of comparador1 is
 begin       
 
-process(op)
+process(ops)
     begin   -- vec[0] > vec[1] and vec[0] > vec[2] and vec[0] > vec[3] and vec[0] > vec[4]
     aux <= '1';
     for j in 1 to COUNT-1 loop
-        IF (not (op(0) > op(j)) THEN
+        IF (not (ops(0) > ops(j)) THEN
             aux <= '0';
             exit;
         end if;
@@ -120,11 +120,11 @@ architecture MENOR of comparador1 is
 signal aux : out  STD_LOGIC;
 begin       
 
-process(op)
+process(ops)
     begin   -- vec[0] < vec[1] and vec[0] < vec[2] and vec[0] < vec[3] and vec[0] < vec[4]
     aux <= '1';
     for j in 1 to COUNT-1 loop
-        IF (not (op(0) < op(j)) THEN
+        IF (not (ops(0) < ops(j)) THEN
             aux <= '0';
             exit;
         end if;
@@ -145,11 +145,11 @@ architecture DISTINTO of comparador1 is
 signal aux : out  STD_LOGIC;
 begin
 
-process(op)
+process(ops)
     begin   -- 
     aux <= '1';
     for j in 0 to COUNT-2 loop
-        IF (op(j) = op(j+1)) THEN
+        IF (ops(j) = ops(j+1)) THEN
             aux <= '0';
             exit;
         end if;
