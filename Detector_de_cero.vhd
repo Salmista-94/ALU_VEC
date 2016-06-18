@@ -128,3 +128,9 @@ begin   --
 end process ;
 
 end Detector_Nulo;
+
+
+
+--all(a)
+
+--any(a)
